@@ -14,16 +14,19 @@ def print(txt):
 @route('/')
 def hello():
     site = """import requests as req
-    import pickle
-    
-    def get(URL = "http://167.71.35.239:8080/bridge"):
-                data = req.get(URL)
-                        data = data.text.encode()
-                                return pickle.loads(data)
-                            
-                            def send(data, URL = "http://167.71.35.239:8080/bridge"):
-                                        serialized = pickle.dumps(data, protocol=0)
-                                                req.post(URL, {"data":serialized})"""
+            import pickle
+
+            def get(URL = "http://167.71.35.239:8080/bridge"):
+                    data = req.get(URL)
+                    print(len(data.text))
+                    data = bytes(data.text,encoding='iso-8859-1')#data.text.encode()
+                    print(len(data))
+                    return pickle.loads(data)
+
+            def send(data, URL = "http://167.71.35.239:8080/bridge"):
+                    serialized = pickle.dumps(data, protocol=0)
+                    #print(serialized)
+                    req.post(URL, {"data":serialized},headers={'Content-Type': 'application/octet-stream'})"""
     return site
 
 my_arrays = []
@@ -32,13 +35,13 @@ def set_data():
     try:
         data = request.params.get('data')
         print(len(data))
-    
+
         #print(str(data,encoding="utf-8"))
         #data = bytes(data,'iso-8859-1')#.decode('utf-8')
         #print(len(data))
         print("Received data of length " +str(len(data)))
         my_arrays.append(data)
-        
+
     except Exception as e:
         print("ERROR")
         print(e)
@@ -46,7 +49,7 @@ def set_data():
 
 
 @route("/bridge", method ="GET")
-def get_data(): 
+def get_data():
     print("User requested data from stack")
     if len(my_arrays)==0:
         print("Stack is empty, return ''")
