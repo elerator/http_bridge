@@ -27,6 +27,7 @@ def hello():
                     serialized = pickle.dumps(data, protocol=0)
                     #print(serialized)
                     req.post(URL, {"data":serialized},headers={'Content-Type': 'application/octet-stream'})"""
+    site = '<div style="white-space: pre-wrap;">' + site + '</div>'
     return site
 
 my_arrays = []
